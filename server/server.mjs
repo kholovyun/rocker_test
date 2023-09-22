@@ -3,6 +3,23 @@ import express from 'express';
 import path from 'path';
 import cors from 'cors';
 
+const accessChecker = (allowedRoles) => {
+  return (req, res, next) => {
+      try {
+          const userId = req.query.userId;
+          console.log(userId)
+          console.log(allowedRoles)
+          if (allowedRoles.includes(userId)) {
+              next();
+          } else {
+              throw new Error("Access denied");
+          }
+      } catch (err) {
+          const error = err;
+          res.status(403).send(error.message);
+      }
+  };
+};
 // Express Server
 const app = express();
 const PORT = 3000;
@@ -18,7 +35,7 @@ app.listen(PORT, () => {
 // Routes
 
 // Create
-app.post('/create', async (req, res) => {
+app.post('/create', accessChecker(['director']), async (req, res) => {
   await performAction('create', req, res);
 });
 
