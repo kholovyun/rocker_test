@@ -1,0 +1,36 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+}
+
+#wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: auto;
+}
+
+#controls, #results {
+  flex-basis: 50%;
+  padding: 40px;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#results {
+  background-color: #eee;
+}
+
+#buttons {
+  border-top: 1px solid #9d9d9d;
+  padding-top: 10px;
+}
+
+input, button, select {
+  font-size: 15px;
+  padding: 6px;
+}

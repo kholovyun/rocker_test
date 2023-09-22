@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Client</title>
+  <script src='client.js'></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id='wrapper'>
+    <div id='controls'>
+      <select id='userId'>
+        <option value='director' selected>Директор</option>
+        <option value='manager'>Менеджер</option>
+        <option value='employee'>Сотрудник</option>
+      </select>
+      <select id='collectionId'>
+        <option value='orders' selected>orders</option>
+        <option value='payments'>payments</option>
+      </select>
+      <input id='documentId' type='text' placeholder='documentId'>
+      <input id='content' type='text' placeholder='content'>
+      <div id='buttons'>
+        <button id='create'>Create</button>
+        <button id='read'>Read</button>
+        <button id='update'>Update</button>
+        <button id='delete'>Delete</button>
+      </div>
+    </div>
+    <div id='results'>
+      JSON Output:
+      <pre><code id='output'></code></pre>
+    </div>
+  </div>
+</body>
+</html>
