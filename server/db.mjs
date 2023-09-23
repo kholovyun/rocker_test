@@ -20,6 +20,12 @@ export default {
   async read({collectionId, userId}) {
     if (!collectionId) return {serverError: 'No collectionId provided'};
     const collection = db.collection(collectionId);
+    if(userId === 'manager'){
+      return documentId ? collection.findOne({_id: convertId(documentId)}) : collection.find().toArray();
+    }
+    if(userId === 'employee'){
+      return documentId ? collection.findOne({_id: convertId(documentId)}) : collection.find().toArray();
+    }
     if(userId === 'director'){
       return documentId ? collection.findOne({_id: convertId(documentId)}) : collection.find().toArray();
     } 
@@ -56,10 +62,10 @@ export default {
     }
   },
 // Get access rights
-  async getRolesCollection () {
+  async getRolesCollection (role) {
     try {
       const rolesCollection = db.collection('roles');
-      return await rolesCollection.find().toArray()
+      return await rolesCollection.findOne({ role: role })
     } catch (error) {
       return error.message
     }  

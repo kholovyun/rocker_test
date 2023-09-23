@@ -4,13 +4,15 @@ import path from 'path';
 import cors from 'cors';
 
 const accessChecker = (allowedRoles) => {
-  return (req, res, next) => {
+  return async(req, res, next) => {
       try {
-          const accessRights = db.getRolesCollection()
-          console.log(accessRights)
-          const {userId, collectionId} = req.query.userId;
+          const {userId, collectionId} = req.query;
+          const accessRights = await db.getRolesCollection(userId)
+
+          console.log(allowedRoles.includes(userId))
+          console.log(collectionId)
           if (allowedRoles.includes(userId)) {
-            if(accessRights.includes(collectionId)){
+            if(accessRights.tableAccess.includes(collectionId)){
               console.log("Accepted")
             } else {
               throw new Error("Access denied");
@@ -48,12 +50,12 @@ app.post('/create', accessChecker(['director']), async (req, res) => {
 });
 
 // Read
-app.post('/read', accessChecker(['direcror', 'manager', 'employee']), async (req, res) => {
+app.post('/read', accessChecker(['director', 'manager', 'employee']), async (req, res) => {
   await performAction('read', req, res);
 });
 
 // Update
-app.post('/update', async (req, res) => {
+app.post('/update', accessChecker(['director', 'manager', 'employee']), async (req, res) => {
   await performAction('update', req, res);
 });
 
