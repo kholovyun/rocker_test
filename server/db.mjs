@@ -17,10 +17,12 @@ export default {
   },
 
   // Read
-  async read({collectionId, documentId}) {
+  async read({collectionId, userId}) {
     if (!collectionId) return {serverError: 'No collectionId provided'};
     const collection = db.collection(collectionId);
-    return documentId ? collection.findOne({_id: convertId(documentId)}) : collection.find().toArray();
+    if(userId === 'director'){
+      return documentId ? collection.findOne({_id: convertId(documentId)}) : collection.find().toArray();
+    } 
   },
 
   // Update
@@ -40,9 +42,30 @@ export default {
     if (!documentId) return {serverError: 'No documentId provided'};
     const collection = db.collection(collectionId);
     return collection.deleteOne({_id: convertId(documentId)});
-  }
-
+  },
+  
+  // Roles collection for access
+  async createRolesCollection(roles) {
+    const rolesCollection = db.collection('roles');
+    const collectionExists = await rolesCollection.findOne({});
+    if (!collectionExists) {
+      await rolesCollection.insertMany(roles, {ordered: false});
+      console.log(`Collection "roles" created and role ${roles.role} added.'`);
+    } else {
+      console.log('Collection "roles" already exists.');
+    }
+  },
+// Get access rights
+  async getRolesCollection () {
+    try {
+      const rolesCollection = db.collection('roles');
+      return await rolesCollection.find().toArray()
+    } catch (error) {
+      return error.message
+    }  
+  },
 }
+
 
 function convertId(id) {
   return new ObjectId(id);

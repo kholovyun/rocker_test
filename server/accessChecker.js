@@ -2,6 +2,7 @@ const accessChecker = (allowedRoles) => {
     return (req, res, next) => {
         try {
             const userId = req.params.userId;
+            
             if (allowedRoles.includes(userId)) {
                 next();
             } else {
